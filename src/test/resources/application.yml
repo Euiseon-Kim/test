@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+app:
+  jwt:
+    secret: test-secret-key-for-testing-only-must-be-32chars
+    expiration-ms: 3600000
+  gitlab:
+    base-url: http://localhost:9999
+    api-url: http://localhost:9999/api/v4
+    bot-token: test-token
+  projects:
+    - project-id: "123"
+      project-path: "test/project"
+      default-branch: "main"
+      allowed-files:
+        - "report/test.ozr"

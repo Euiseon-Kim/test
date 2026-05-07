@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Data (H2 db files)
+data/
+
+# Env
+.env
+*.env
+
+# Logs
+*.log
+logs/
