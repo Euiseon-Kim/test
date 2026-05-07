@@ -1,0 +1,30 @@
+# 폐쇄망 반입용 Dockerfile
+# 사전 빌드된 JAR 파일만 이미지에 포함 (인터넷 연결 불필요)
+#
+# 사용법:
+#   1. 인터넷 환경에서: gradle bootJar
+#   2. build/libs/*.jar 를 서버로 전달
+#   3. docker build -f Dockerfile.jar -t ozr-backend:1.0.0 .
+#   4. docker save ozr-backend:1.0.0 | gzip > ozr-backend-1.0.0.tar.gz
+#   5. 폐쇄망에서: docker load < ozr-backend-1.0.0.tar.gz
+
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+RUN mkdir -p /app/data
+
+RUN addgroup -S ozrgroup && adduser -S ozruser -G ozrgroup
+RUN chown -R ozruser:ozrgroup /app
+
+# 사전 빌드된 JAR 복사
+COPY --chown=ozruser:ozrgroup build/libs/*.jar app.jar
+
+USER ozruser
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", \
+    "-Djava.security.egd=file:/dev/./urandom", \
+    "-XX:+UseContainerSupport", \
+    "-XX:MaxRAMPercentage=75.0", \
+    "-jar", "app.jar"]
