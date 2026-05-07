@@ -31,8 +31,8 @@ app:
   max-file-size-bytes: 10485760  # 10MB
 
   gitlab:
-    base-url: ${GITLAB_BASE_URL:http://your-gitlab.example.com}
-    api-url: ${GITLAB_API_URL:http://your-gitlab.example.com/api/v4}
+    base-url: ${GITLAB_BASE_URL:http://gitlab.com}
+    api-url: ${GITLAB_API_URL:http://gitlab.com/api/v4}
     # GitLab Bot 토큰 - 절대 소스코드에 포함하지 말 것. 환경변수로만 주입
     bot-token: ${GITLAB_BOT_TOKEN:}
 
