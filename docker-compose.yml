@@ -17,7 +17,7 @@ services:
       # JWT 비밀키 - 운영 환경에서 반드시 강력한 키로 교체
       - JWT_SECRET=${JWT_SECRET:-changeme-use-a-very-long-secret-key-at-least-32-chars}
       # H2 DB 파일 경로
-      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/ozrdb;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/ozrdb;AUTO_SERVER=TRUE
     volumes:
       - ozr-data:/app/data
     restart: unless-stopped
