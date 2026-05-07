@@ -1,20 +1,16 @@
 # ===== 빌드 스테이지 =====
-FROM eclipse-temurin:17-jdk-alpine AS builder
+# gradle 공식 이미지 사용 → gradlew 불필요
+FROM gradle:8.7-jdk21-alpine AS builder
 
 WORKDIR /app
 
 # 의존성 캐싱을 위해 gradle 파일 먼저 복사
 COPY build.gradle settings.gradle ./
-COPY gradle ./gradle
-COPY gradlew .
-RUN chmod +x gradlew
-
-# 의존성 다운로드 (폐쇄망 환경에서는 Gradle 캐시 볼륨 활용 권장)
-RUN ./gradlew dependencies --no-daemon --quiet 2>/dev/null || true
+RUN gradle dependencies --no-daemon --quiet 2>/dev/null || true
 
 # 소스 코드 복사 및 빌드
 COPY src ./src
-RUN ./gradlew bootJar --no-daemon -x test
+RUN gradle bootJar --no-daemon -x test
 
 # ===== 런타임 스테이지 =====
 FROM eclipse-temurin:17-jre-alpine
