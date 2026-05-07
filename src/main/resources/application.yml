@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/ozrdb;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: false  # 운영에서는 false 유지
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+app:
+  jwt:
+    # 최소 256비트(32자 이상) 비밀키. 운영 환경에서는 환경변수로 주입 필수
+    secret: ${JWT_SECRET:changeme-use-a-very-long-secret-key-at-least-32-chars}
+    expiration-ms: 86400000   # 24시간
+
+  max-file-size-bytes: 10485760  # 10MB
+
+  gitlab:
+    base-url: ${GITLAB_BASE_URL:http://your-gitlab.example.com}
+    api-url: ${GITLAB_API_URL:http://your-gitlab.example.com/api/v4}
+    # GitLab Bot 토큰 - 절대 소스코드에 포함하지 말 것. 환경변수로만 주입
+    bot-token: ${GITLAB_BOT_TOKEN:}
+
+  projects:
+    - project-id: "123"
+      project-path: "insurance/form-config"
+      default-branch: "main"
+      allowed-files:
+        - "report/sample1.ozr"
+        - "report/sample2.ozr"
+    # 추가 프로젝트 예시
+    # - project-id: "456"
+    #   project-path: "dept/another-project"
+    #   default-branch: "develop"
+    #   allowed-files:
+    #     - "templates/form.ozr"
+
+logging:
+  level:
+    com.example.ozr: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
